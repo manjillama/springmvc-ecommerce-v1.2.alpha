@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/security
+	   http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- MySQL Database Connection -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:8889/ecom_demo" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+	</bean>
+	
+	<!-- Hibernate Configuration -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- Dialect is basically a specific sql syntax used for specific database, for now MySQL dialect is used my MySQL database -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!-- 
+					- Basically validates or export the schema ddl to the database when the session factory is created
+					- You can put four different values here i.e validate (validates the schema), update (updates the schema)
+					   ,create(creates the scheme, also destroys previous schema), create drop(It creates a schema, by the end of the session it will drop the created schema).
+				-->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- Formats the outputted sql -->
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="packagesToScan" value="com.manjiltamang.emusicstore"></property>
+	</bean>
+	
+	<!-- Defines transaction management in Hibernate -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- ImageUpload -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5000000"></property>
+	</bean>
+	
+	<!-- <security:http auto-config="true">
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_USER')" />
+	</security:http>
+	
+	<security:authentication-manager>
+	  <security:authentication-provider>
+	    <security:user-service>
+			<security:user name="admin" password="admin1234" authorities="ROLE_USER" />
+	    </security:user-service>
+	  </security:authentication-provider>
+	</security:authentication-manager>  -->
+	
+	<!-- Spring Security Configuration -->
+	<security:http auto-config="true" use-expressions="true">
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<security:form-login
+			login-page="/login"
+			default-target-url="/admin/"
+			
+			authentication-failure-url="/login?error"
+			username-parameter="username"
+			password-parameter="password"/>
+		<security:logout
+			logout-success-url="/login?logout" logout-url="/j_spring_security_logout" />
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource"
+										users-by-username-query="select username,password, enabled from users where username=?"
+		  								authorities-by-username-query="select username, role from user_roles where username =?  "/>
+		</security:authentication-provider>
+	</security:authentication-manager> 
+</beans>
