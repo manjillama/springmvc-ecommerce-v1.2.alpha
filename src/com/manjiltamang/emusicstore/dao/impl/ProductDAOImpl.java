@@ -1,6 +1,5 @@
 package com.manjiltamang.emusicstore.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -13,32 +12,31 @@ import org.springframework.transaction.annotation.Transactional;
 import com.manjiltamang.emusicstore.dao.ProductDAO;
 import com.manjiltamang.emusicstore.model.Product;
 
-@Repository
+@Repository("productDAO")
 @Transactional
 public class ProductDAOImpl implements ProductDAO{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@Override
-	public List<Product> getAll() throws ClassNotFoundException, SQLException {
+	public List<Product> getAll() {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Product");
-		List<Product> products = query.list();
+		List<Product> productList = query.list();
 		session.flush();
-		return products;
+		return productList;
 	}
 
 	@Override
-	public int insert(Product product) throws ClassNotFoundException, SQLException {
+	public void insert(Product product) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(product);
 		session.flush();
-		return 0;
 	}
 
 	@Override
-	public Product getById(String id) throws ClassNotFoundException, SQLException {
+	public Product getById(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		Product product = (Product) session.get(Product.class, id);
 		session.flush();
@@ -46,25 +44,17 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	@Override
-	public Product search(String name) throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int update(Product product) throws ClassNotFoundException, SQLException {
+	public void update(Product product) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(product);
 		session.flush();
-		return 0;
 	}
 
 	@Override
-	public int delete(String id) throws ClassNotFoundException, SQLException {
+	public void delete(Product product) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(getById(id));
+		session.delete(product);
 		session.flush();
-		return 0;
 	}
 	
 	

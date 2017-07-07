@@ -31,6 +31,10 @@
 		<a href="${SITE_URL}/admin/productinventory">Product Inventory</a>
 	</h3>
 	<p>Here, you can view, check and modify the product inventory.</p>
+	<h3>
+		<a href="${SITE_URL}/admin/customer">Customer Management</a>
+	</h3>
+	<p>Here, you can view, the customer infomation.</p>
 </div>	
 
 <%@include file="../includes/footer.jsp"%>

@@ -9,6 +9,8 @@
 <!-- JQUERY -->
 <script src="${SITE_URL}/resources/js/jquery.min.js"></script>
 
+
+
 <!-- Latest compiled and minified BOOTSTRAP JavaScript -->
 <script src="${SITE_URL}/resources/js/bootstrap.min.js"></script>
 </body>

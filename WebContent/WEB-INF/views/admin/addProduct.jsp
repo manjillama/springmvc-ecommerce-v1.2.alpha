@@ -7,7 +7,7 @@
 		<p class="lead">Here you can add product.</p>
 	</div>
 	
-	<form:form action="${SITE_URL}/admin/productinventory/addproduct" method="post" commandName="product" enctype="multipart/form-data">
+	<form:form action="${SITE_URL}/admin/productinventory/addProduct" method="post" commandName="product" enctype="multipart/form-data">
 	  <div class="form-group">
 	    <label for="productId">Product Id</label>&nbsp;&nbsp;&nbsp;&nbsp;<form:errors path="productId" cssStyle="color:red"/>
 	    <form:input type="text" name="id" class="form-control" id="productId" placeholder="Product Id" path="productId" />

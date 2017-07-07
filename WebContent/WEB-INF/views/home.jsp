@@ -15,17 +15,17 @@
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item active">
-          <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+          <img class="first-slide" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Guitar_Store.jpg/1280px-Guitar_Store.jpg" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Example headline.</h1>
-              <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
+              <p>Note: If you're viewing this page via a  buttons on the left and right might not load/display properly due to web browser security rules.</p>
               <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
         <div class="item">
-          <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
+          <img class="second-slide" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Guitar_Store.jpg/1280px-Guitar_Store.jpg" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Another example headline.</h1>
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="item">
-          <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+          <img class="third-slide" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Guitar_Store.jpg/1280px-Guitar_Store.jpg" alt="Third slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>One more for good measure.</h1>

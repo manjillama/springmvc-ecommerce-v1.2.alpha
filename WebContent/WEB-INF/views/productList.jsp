@@ -28,17 +28,6 @@
 						<span class="glyphicon glyphicon-info-sign"></span>
 					</a>
 				</td>
-				
-				<%-- <td>
-				<c:choose>
-						<c:when test="${product.productStatus==true}">
-							<span class="label label-success">Active</span>
-						</c:when>
-						<c:otherwise>
-							<span class="label label-danger">Inactive</span>
-						</c:otherwise>
-				</c:choose>
-				</td> --%>
 			</tr>
 		</c:forEach>
 		

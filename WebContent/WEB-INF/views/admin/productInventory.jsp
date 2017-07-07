@@ -49,7 +49,7 @@
 		</c:forEach>
 		
 	</table>
-	<a href="${SITE_URL}/admin/productinventory/addproduct" class="btn btn-primary">Add Product</a>
+	<a href="${SITE_URL}/admin/productinventory/addProduct" class="btn btn-primary">Add Product</a>
 </div>
 <%@include file="../includes/footer.jsp"%>
 

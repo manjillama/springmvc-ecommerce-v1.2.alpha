@@ -1,60 +1,62 @@
 package com.manjiltamang.emusicstore.model;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name="product")
-public class Product {
+public class Product implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@Column(name="product_id")
-	@NotEmpty(message = "The product name must not be null")
-	private String productId;
+	@NotNull(message = "The product name must not be null")
+	private int productId;
 	
 	@NotEmpty(message = "The product name must not be null")
-	@Column(name="product_name")
 	private String productName;
-	@Column(name="product_category")
 	private String productCategory;
-	@Column(name="product_description")
 	private String productDescription;
 	
 	@Min(value=0, message = "The product price must not be less than zero")
-	@Column(name="product_price")
 	private Double productPrice;
-	@Column(name="product_condition")
 	private String productCondition;
-	@Column(name="product_status")
 	private boolean productStatus;
 	
-	@Column(name="product_stock")
 	@Min(value=0, message = "The product price must not be less than zero")
 	private int unitInStock;
-	@Column(name="product_manufacturer")
 	private String productManufacturer;
 	@Transient
-	@Column(name="product_image")
 	private MultipartFile productImage;
 	
+	@OneToMany(mappedBy = "product", cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
+	private List<CartItem> cartItemList;
 	
 
 
 	public Product(){}
 
 	
-	public String getProductId() {
+	public int getProductId() {
 		return productId;
 	}
 
 
-	public void setProductId(String productId) {
+	public void setProductId(int productId) {
 		this.productId = productId;
 	}
 
@@ -131,6 +133,17 @@ public class Product {
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
+
+
+	public List<CartItem> getCartItemList() {
+		return cartItemList;
+	}
+
+
+	public void setCartItemList(List<CartItem> cartItemList) {
+		this.cartItemList = cartItemList;
+	}
+	
 	
 	
 }

@@ -2,14 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:security="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/security
-	   http://www.springframework.org/schema/security/spring-security.xsd">
+	   http://www.springframework.org/schema/security/spring-security.xsd
+	   http://www.springframework.org/schema/webflow-config
+	   http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.4.xsd">
 
 	<!-- MySQL Database Connection -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -50,25 +48,15 @@
 		<property name="maxUploadSize" value="5000000"></property>
 	</bean>
 	
-	<!-- <security:http auto-config="true">
-		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_USER')" />
-	</security:http>
-	
-	<security:authentication-manager>
-	  <security:authentication-provider>
-	    <security:user-service>
-			<security:user name="admin" password="admin1234" authorities="ROLE_USER" />
-	    </security:user-service>
-	  </security:authentication-provider>
-	</security:authentication-manager>  -->
-	
 	<!-- Spring Security Configuration -->
 	<security:http auto-config="true" use-expressions="true">
-		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<security:intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
+		<security:intercept-url pattern="/customer**" access="hasRole('ROLE_USER')"/>
+		<!-- access denied page -->
+		<security:access-denied-handler error-page="/403" />
 		<security:form-login
 			login-page="/login"
-			default-target-url="/admin/"
-			
+			default-target-url="/"
 			authentication-failure-url="/login?error"
 			username-parameter="username"
 			password-parameter="password"/>
@@ -79,8 +67,21 @@
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:jdbc-user-service data-source-ref="dataSource"
-										users-by-username-query="select username,password, enabled from users where username=?"
-		  								authorities-by-username-query="select username, role from user_roles where username =?  "/>
+										users-by-username-query="select username,password, enabled from Users where username=?"
+		  								authorities-by-username-query="select username, authority from Authorities where username =?  "/>
 		</security:authentication-provider>
 	</security:authentication-manager> 
+	
+	<!-- Customer Order Web Flow -->
+	<webflow-config:flow-executor id="flowExecutor" flow-registry="flowRegistry" />
+	<webflow-config:flow-registry id="flowRegistry" base-path="/WEB-INF/flows">
+		<!-- Oour configuration file for the check flow -->
+		<webflow-config:flow-location path="/checkout/checkout-flow.xml" id="checkout" />
+	</webflow-config:flow-registry>
+	<bean id="flowHandlerMapping" class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
+		<property name="flowRegistry" ref="flowRegistry" />
+	</bean>
+	<bean id="flowHandlerAdapter" class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">	
+		<property name="flowExecutor" ref="flowExecutor" />
+	</bean>
 </beans>
